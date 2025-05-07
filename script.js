@@ -3,15 +3,14 @@ async function redirectToLiqpay() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-            amount: 250,
+            amount: 2,
             description: "Футболка чорна, розмір L",
-            order_id: "order_ABC123",
+            // order_id: "order_ABC123",
         }),
     });
 
     const { data, signature } = await response.json();
 
-    // Створюємо форму
     const form = document.createElement("form");
     form.method = "POST";
     form.action = "https://www.liqpay.ua/api/3/checkout";
@@ -33,3 +32,38 @@ async function redirectToLiqpay() {
 
     form.submit();
 }
+
+const amountInput = document.querySelector('#amountInput');
+const decrementButton = document.querySelector('#decrement');
+const incrementButton = document.querySelector('#increment');
+
+amountInput.value = 1;
+
+function validateNumber(str) {
+    if (typeof str !== "string") return false
+    const num = Number(str)
+    return !isNaN(num) && Number.isInteger(num) && num > 0
+}
+
+amountInput.addEventListener('change', () => {
+    const amount = amountInput.value;
+
+    if (validateNumber(amount)) {
+        amountInput.value = amount;
+    }
+    else {
+        amountInput.value = 1;
+    }
+})
+
+decrementButton.addEventListener('click', () => {
+    const amount = amountInput.value;
+
+    if (amount > 1) {
+        amountInput.value--;
+    }
+})
+
+incrementButton.addEventListener('click', () => {
+    amountInput.value++;
+})

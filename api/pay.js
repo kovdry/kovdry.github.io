@@ -8,7 +8,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: "Only POST allowed" });
     }
 
-    const { amount, description, order_id } = req.body;
+    const { amount, description } = req.body;
 
     const params = {
         public_key: LIQPAY_PUBLIC_KEY,
@@ -17,8 +17,8 @@ export default async function handler(req, res) {
         amount,
         currency: "UAH",
         description,
-        order_id,
-        result_url: "https://yourdomain.com/success",
+        // order_id,
+        result_url: "https://kovdry-github-io.vercel.app/",
     };
 
     const data = Buffer.from(JSON.stringify(params)).toString("base64");
