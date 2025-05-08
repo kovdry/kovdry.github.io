@@ -13,8 +13,6 @@
     src: url(fonts/Scada-Regular.ttf);
 }
 
-body {}
-
 .navbar-custom {
     background-color: #dbd0ff;
 }
@@ -150,6 +148,7 @@ body {}
 
 .purchase {
     width: 90%;
+    min-height: 730px;
     display: flex;
     align-items: center;
     background-color: #ffffff;
@@ -158,13 +157,13 @@ body {}
 
 .prod-img {
     width: 50%;
-    height: 700px;
+    height: 730px;
     object-fit: cover;
 }
 
 .purchase-form {
     display: flex;
-    height: 700px;
+    height: 100%;
     width: 50%;
     flex-direction: column;
     align-items: start;

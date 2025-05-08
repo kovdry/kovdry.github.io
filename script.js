@@ -1,43 +1,57 @@
-async function redirectToLiqpay() {
+const redirectToLiqpay = async (e) => {
+    const payload = {
+        name: document.querySelector("#name").value,
+        phone: document.querySelector("#phone").value,
+        address: document.querySelector("#address").value,
+        size: sizeSelect.value,
+        color: colorSelect.value,
+        amount: Number(amountInput.value),
+    };
+
     const response = await fetch("/api/pay", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            amount: 2,
-            description: "Футболка чорна, розмір L",
-            // order_id: "order_ABC123",
-        }),
+        body: JSON.stringify(payload),
     });
 
-    const { data, signature } = await response.json();
+    const { data, signature, error } = await response.json();
+
+    if (error) {
+        alert("Помилка: " + error);
+        return;
+    }
 
     const form = document.createElement("form");
     form.method = "POST";
     form.action = "https://www.liqpay.ua/api/3/checkout";
     form.style.display = "none";
 
-    const dataInput = document.createElement("input");
-    dataInput.type = "hidden";
-    dataInput.name = "data";
-    dataInput.value = data;
+    form.innerHTML = `
+        <input type="hidden" name="data" value="${data}">
+        <input type="hidden" name="signature" value="${signature}">
+    `;
 
-    const sigInput = document.createElement("input");
-    sigInput.type = "hidden";
-    sigInput.name = "signature";
-    sigInput.value = signature;
-
-    form.appendChild(dataInput);
-    form.appendChild(sigInput);
     document.body.appendChild(form);
-
     form.submit();
-}
+};
+
 
 const amountInput = document.querySelector('#amountInput');
 const decrementButton = document.querySelector('#decrement');
 const incrementButton = document.querySelector('#increment');
+const totalPrice = document.querySelector('#price');
+const colorSelect = document.querySelector('#color');
+const sizeSelect = document.querySelector('#size');
 
-amountInput.value = 1;
+let amount = 1;
+let sizePrice = 950;
+let colorPrice = 0;
+let price = (sizePrice + colorPrice) * amount;
+let color = 'Сірий';
+let size = '155x210';
+
+amountInput.value = amount;
+totalPrice.innerHTML = (sizePrice + colorPrice) * amount + ' грн';
 
 function validateNumber(str) {
     if (typeof str !== "string") return false
@@ -45,25 +59,76 @@ function validateNumber(str) {
     return !isNaN(num) && Number.isInteger(num) && num > 0
 }
 
-amountInput.addEventListener('change', () => {
-    const amount = amountInput.value;
+function updatePrice() {
+    price = (sizePrice + colorPrice) * amount;
+    totalPrice.innerHTML = price + ' грн';
+}
 
-    if (validateNumber(amount)) {
+colorSelect.addEventListener('change', (e) => {
+    switch (e.target.value) {
+        case 'grey':
+            color = 'Сірий';
+            colorPrice = 0;
+            break;
+        case 'chocolate':
+            color = 'Шоколад';
+            colorPrice = 100;
+            break;
+        case 'blue':
+            color = 'Блакитний';
+            colorPrice = 150;
+            break;
+    }
+
+    updatePrice();
+})
+
+sizeSelect.addEventListener('change', (e) => {
+    switch (e.target.value) {
+        case '155x210':
+            size = '155x210';
+            sizePrice = 950;
+            break;
+        case '175x210':
+            size = '175x210';
+            sizePrice = 1250;
+            break;
+        case '200x220':
+            size = '200x220';
+            sizePrice = 1500;
+            break;
+    }
+
+    updatePrice();
+})
+
+amountInput.addEventListener('change', () => {
+    const inputedAmount = amountInput.value;
+
+    if (validateNumber(inputedAmount)) {
+        amount = Number(inputedAmount);
         amountInput.value = amount;
     }
     else {
-        amountInput.value = 1;
+        amount = 1;
+        amountInput.value = amount;
     }
+
+    updatePrice();
 })
 
 decrementButton.addEventListener('click', () => {
-    const amount = amountInput.value;
-
     if (amount > 1) {
-        amountInput.value--;
+        amount--;
+        amountInput.value = amount;
+
+        updatePrice();
     }
 })
 
 incrementButton.addEventListener('click', () => {
-    amountInput.value++;
+    amount++;
+    amountInput.value = amount;
+
+    updatePrice();
 })
