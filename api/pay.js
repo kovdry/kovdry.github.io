@@ -2,6 +2,7 @@ import crypto from "crypto";
 
 const LIQPAY_PUBLIC_KEY = process.env.LIQPAY_PUBLIC_KEY;
 const LIQPAY_PRIVATE_KEY = process.env.LIQPAY_PRIVATE_KEY;
+const ENCRYPTION_KEY = Buffer.from(process.env.ORDER_ENCRYPTION_KEY, "hex");
 
 const sizePrices = {
     '155x210': 950,
@@ -15,9 +16,17 @@ const colorPrices = {
     blue: 150,
 };
 
-function encodeOrderId(formData) {
+function encrypt(text) {
+    const iv = crypto.randomBytes(16);
+    const cipher = crypto.createCipheriv("aes-256-cbc", ENCRYPTION_KEY, iv);
+    let encrypted = cipher.update(text, "utf8", "base64");
+    encrypted += cipher.final("base64");
+    return iv.toString("base64") + ":" + encrypted;
+}
+
+function encryptOrderId(formData) {
     const json = JSON.stringify(formData);
-    return Buffer.from(json).toString("base64");
+    return encrypt(json);
 }
 
 export default async function handler(req, res) {
@@ -25,37 +34,27 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: "Only POST allowed" });
     }
 
-    const { name, phone, address, size, color, amount } = req.body;
+    const { name, phone, address, size, color, quantity } = req.body;
 
     if (
         !name || !phone || !address ||
         !(size in sizePrices) ||
         !(color in colorPrices) ||
-        !Number.isInteger(amount) || amount < 1
+        !Number.isInteger(quantity) || quantity < 1
     ) {
         return res.status(400).json({ error: "Invalid input data" });
     }
 
     const unitPrice = sizePrices[size] + colorPrices[color];
-    const total = unitPrice * amount;
+    const total = unitPrice * quantity;
 
     const readableColor = {
         grey: "Сірий",
         chocolate: "Шоколад",
-        blue: "Блакитний",
+        blue: "Блакитний"
     }[color];
 
-    const description = 'Оплата за товар';
-
-    const order_id = encodeOrderId({
-        name,
-        phone,
-        address,
-        size,
-        color,
-        amount,
-        total,
-    });
+    const order_id = encryptOrderId({ name, phone, address, size, color: readableColor, quantity, total });
 
     const params = {
         public_key: LIQPAY_PUBLIC_KEY,
@@ -63,7 +62,7 @@ export default async function handler(req, res) {
         action: "pay",
         amount: total,
         currency: "UAH",
-        description,
+        description: "Оплата за товар",
         order_id,
         result_url: "https://kovdry-github-io.vercel.app/",
         server_url: "https://kovdry-github-io.vercel.app/api/payment-callback",

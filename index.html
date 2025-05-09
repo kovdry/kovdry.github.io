@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 
 <head>
     <meta charset="UTF-8">
@@ -44,7 +44,7 @@
         <img src="assets/header.png" alt="" class="header-img">
         <div class="header-text-container">
             <!-- <div style="font-size: 22px;">NEW</div> -->
-            <div style="font-size: 38px; font-weight: 600;">Ковдри 4 сезони</div>
+            <div style="font-size: 38px;">Ковдри 4 сезони</div>
             <div style="font-size: 15px; font-family: 'Scada Bold';">Затишок щодня. Завжди</div>
         </div>
     </header>
@@ -52,18 +52,20 @@
     <div class="section-container" id="about">
         <div class="section-title">ПРО ТОВАР</div>
         <div class="about">
-            <div class="title" id="aboutTitle"></div>
+            <div class="title" id="aboutTitle">Ковдра 4 сезони складається з 2-х повноцінних ковдр з різною щільністю
+                наповнювача</div>
             <div class="demos-container">
                 <div class="demo">
-                    <img src="assets/placeholder.png" alt="" class="img">
-                    <div class="img-desc" id="imgDesc1"></div>
+                    <img src="assets/carousel1.png" alt="" class="img">
+                    <div class="img-desc" id="imgDesc1">Одна - 150г / м2, яку ми використовуємо влітку</div>
                 </div>
                 <div class="demo">
-                    <img src="assets/placeholder.png" alt="" class="img">
-                    <div class="img-desc" id="imgDesc2"></div>
+                    <img src="assets/carousel3.png" alt="" class="img">
+                    <div class="img-desc" id="imgDesc2">Друга- 350г / м2 для використання навесні та восени</div>
                 </div>
             </div>
-            <div class="about-footer" id="aboutFooter"></div>
+            <div class="about-footer" id="aboutFooter">Ковдри кріпляться один до одного на кнопках і утворюють теплу
+                ковдру на зиму</div>
         </div>
     </div>
 
@@ -71,6 +73,56 @@
         <div class="section-title">ХАРАКТЕРИСТИКИ</div>
         <div class="specs">
 
+            <div class="spec-container">
+                <img class="spec-img" src="assets/header.png" alt="">
+                <div class="spec-text">
+                    <div>Подвійна ковдра 4 сезони виготовлена з високоякісних антиалергенних матеріалів і
+                        складається з двох ковдр, для комфортного сну взимку та влітку</div>
+                </div>
+            </div>
+
+            <div class="spec-container">
+                <img class="spec-img" src="assets/carousel2.png" alt="">
+                <div class="spec-text">
+                    <div>Зимова ковдра з наповненням з <b>поліефірного волокна</b> дуже тепла та підходить навіть людямз
+                        чутливою шкірою</div>
+                </div>
+            </div>
+
+            <div class="spec-container">
+                <img class="spec-img" src="assets/carousel1.png" alt="">
+                <div class="spec-text">
+                    <div>Літня ковдра з <b>синтепоновим наповненням</b> відома своєю здатністю не вбирати запахи та пил
+                    </div>
+                </div>
+            </div>
+
+            <div class="spec-container">
+                <img class="spec-img" src="assets/carousel3.png" alt="">
+                <div class="spec-text">
+                    <div>Мікрофібра, з якої виготовлені обидві ковдри, робить їх стійкими до забруднень та зручними у
+                        пранні, що є запорукою тривалого та зручного використання</div>
+                </div>
+            </div>
+
+            <div class="double-spec-container">
+                <div class="spec-container">
+                    <div class="top-spec-text">Товсте</div>
+                    <img src="assets/carousel1.png" alt="" class="spec-img">
+                    <div class="bottom-spec-text">
+                        <span><b>Тканина:</b> Мікрофібра</span>
+                        <span><b>Вклад:</b> Поліефірне волкно</span>
+                    </div>
+                </div>
+                <div class="spec-container">
+                    <div class="top-spec-text">Літнє</div>
+                    <img src="assets/carousel3.png" alt="" class="spec-img">
+                    <div class="bottom-spec-text">
+                        <span><b>Тканина:</b> Мікрофібра</span>
+                        <span><b>Вклад:</b> Синтепон</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -115,7 +167,7 @@
         <div class="section-title">ПРИДБАТИ</div>
         <div class="purchase">
             <img src="assets/carousel3.png" alt="" class="prod-img">
-            <form action="" class="purchase-form" onsubmit="return false">
+            <form class="purchase-form">
                 <div class="title">Ковдра 4 сезони</div>
 
                 <label for="name">Ваш ПІБ</label>
@@ -141,12 +193,12 @@
                     <option value="200x220">200x220</option>
                 </select>
 
-                <label for="amount">Кількість</label>
-                <div class="amount-select" id="amount">
+                <label for="quantity">Кількість</label>
+                <div class="quantity-select" id="quantity">
                     <button class="left" id="decrement">
                         <img src="assets/minus.png" alt="">
                     </button>
-                    <input type="text" id="amountInput">
+                    <input type="text" id="quantityInput">
                     <button class="right" id="increment">
                         <img src="assets/plus.png" alt="">
                     </button>
@@ -157,13 +209,21 @@
                     <div id="price"></div>
                 </div>
 
-                <button type="submit" class="submit" onclick="redirectToLiqpay()">Придбати</button>
+                <button class="submit" onclick="redirectToLiqpay()">Придбати</button>
             </form>
         </div>
     </div>
 
     <footer>
-
+        <a href="">Політика конфіденційності</a>
+        <a href="">Умови повернення</a>
+        <div class="socials">
+            <a href=""><img src="assets/insta.png" alt=""></a>
+            <a href=""><img src="assets/tiktok.png" alt=""></a>
+            <a href=""><img src="assets/facebook.png" alt=""></a>
+        </div>
+        <div class="divider"></div>
+        <div id="allRightsReserved"></div>
     </footer>
 
     <script src="script.js"></script>

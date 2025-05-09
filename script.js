@@ -1,11 +1,11 @@
-const redirectToLiqpay = async (e) => {
+const redirectToLiqpay = async () => {
     const payload = {
         name: document.querySelector("#name").value,
         phone: document.querySelector("#phone").value,
         address: document.querySelector("#address").value,
         size: sizeSelect.value,
         color: colorSelect.value,
-        amount: Number(amountInput.value),
+        quantity: Number(quantityInput.value),
     };
 
     const response = await fetch("/api/pay", {
@@ -36,22 +36,22 @@ const redirectToLiqpay = async (e) => {
 };
 
 
-const amountInput = document.querySelector('#amountInput');
+const quantityInput = document.querySelector('#quantityInput');
 const decrementButton = document.querySelector('#decrement');
 const incrementButton = document.querySelector('#increment');
 const totalPrice = document.querySelector('#price');
 const colorSelect = document.querySelector('#color');
 const sizeSelect = document.querySelector('#size');
 
-let amount = 1;
+let quantity = 1;
 let sizePrice = 950;
 let colorPrice = 0;
-let price = (sizePrice + colorPrice) * amount;
+let price = (sizePrice + colorPrice) * quantity;
 let color = 'Сірий';
 let size = '155x210';
 
-amountInput.value = amount;
-totalPrice.innerHTML = (sizePrice + colorPrice) * amount + ' грн';
+quantityInput.value = quantity;
+totalPrice.innerHTML = (sizePrice + colorPrice) * quantity + ' грн';
 
 function validateNumber(str) {
     if (typeof str !== "string") return false
@@ -60,7 +60,7 @@ function validateNumber(str) {
 }
 
 function updatePrice() {
-    price = (sizePrice + colorPrice) * amount;
+    price = (sizePrice + colorPrice) * quantity;
     totalPrice.innerHTML = price + ' грн';
 }
 
@@ -102,33 +102,36 @@ sizeSelect.addEventListener('change', (e) => {
     updatePrice();
 })
 
-amountInput.addEventListener('change', () => {
-    const inputedAmount = amountInput.value;
+quantityInput.addEventListener('change', () => {
+    const inputedQuantity = quantityInput.value;
 
-    if (validateNumber(inputedAmount)) {
-        amount = Number(inputedAmount);
-        amountInput.value = amount;
+    if (validateNumber(inputedQuantity)) {
+        quantity = Number(inputedQuantity);
+        quantityInput.value = quantity;
     }
     else {
-        amount = 1;
-        amountInput.value = amount;
+        quantity = 1;
+        quantityInput.value = quantity;
     }
 
     updatePrice();
 })
 
 decrementButton.addEventListener('click', () => {
-    if (amount > 1) {
-        amount--;
-        amountInput.value = amount;
+    if (quantity > 1) {
+        quantity--;
+        quantityInput.value = quantity;
 
         updatePrice();
     }
 })
 
 incrementButton.addEventListener('click', () => {
-    amount++;
-    amountInput.value = amount;
+    quantity++;
+    quantityInput.value = quantity;
 
     updatePrice();
 })
+
+const currentYear = new Date().getFullYear();
+const allRightsReserved = document.querySelector('#allRightsReserved').innerHTML = `Ковдри 4 сезони @ ${currentYear} Усі права захищено`;
